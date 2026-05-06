@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>離婚後の収支シミュレーター</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Meiryo',sans-serif;background:#f2ede8;color:#2d2520;padding:1.5rem 1rem;}
+.wrap{max-width:680px;margin:0 auto;}
+h1{font-size:18px;font-weight:600;color:#2d2520;margin-bottom:4px;text-align:center;}
+.header-sub{font-size:12px;color:#9a8880;text-align:center;margin-bottom:2rem;}
+.step-nav{display:flex;border:1px solid #d9cfc8;border-radius:10px;overflow:hidden;margin-bottom:2rem;}
+.step-btn{flex:1;padding:10px 4px;font-size:12px;background:#e8e0d8;color:#9a8880;border:none;border-right:1px solid #d9cfc8;cursor:pointer;line-height:1.5;transition:background 0.15s;}
+.step-btn:last-child{border-right:none;}
+.step-btn.active{background:#fff8f4;color:#2d2520;font-weight:600;}
+.step-panel{display:none;}
+.step-panel.active{display:block;}
+.sec-title{font-size:17px;font-weight:600;color:#2d2520;margin-bottom:4px;}
+.sec-sub{font-size:13px;color:#7a6a62;line-height:1.6;margin-bottom:1.25rem;}
+.card{background:#fff8f4;border:1px solid #d9cfc8;border-radius:10px;overflow:hidden;margin-bottom:1rem;box-shadow:0 1px 4px rgba(100,70,50,0.06);}
+.card-head{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:#ede5de;border-bottom:1px solid #d9cfc8;}
+.card-head-label{font-size:13px;font-weight:600;color:#2d2520;}
+.card-total{font-size:14px;font-weight:600;}
+.card-total.inc{color:#2e7a52;}
+.card-total.exp{color:#a83228;}
+.row{display:grid;grid-template-columns:1fr 110px 20px;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #ede5de;}
+.row:last-child{border-bottom:none;}
+.row label{font-size:13px;color:#5a4a42;line-height:1.4;}
+.row input[type=number]{width:110px;padding:6px 8px;font-size:13px;border:1px solid #c8beb8;border-radius:6px;background:#fffcfa;color:#2d2520;text-align:right;}
+.row input[type=number]:focus{outline:none;border-color:#b09080;}
+.row .unit{font-size:12px;color:#b09080;}
+.balance-box{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin-bottom:1.25rem;}
+.balance-label{font-size:13px;color:#7a6a62;}
+.balance-value{font-size:22px;font-weight:700;}
+.balance-value.plus{color:#2e7a52;}
+.balance-value.minus{color:#a83228;}
+.next-btn{display:block;width:100%;padding:12px;font-size:14px;font-weight:600;background:#fff8f4;border:1px solid #c8beb8;border-radius:8px;cursor:pointer;color:#2d2520;margin-top:1.25rem;transition:background 0.15s;}
+.next-btn:hover{background:#ede5de;}
+.child-section{background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;padding:14px;margin-bottom:1rem;}
+.child-section-title{font-size:13px;font-weight:600;color:#2d2520;margin-bottom:10px;}
+.child-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.child-row:last-child{margin-bottom:0;}
+.child-row label{font-size:13px;color:#5a4a42;min-width:70px;}
+.child-row select{padding:6px 8px;font-size:13px;border:1px solid #c8beb8;border-radius:6px;background:#fff8f4;color:#2d2520;}
+.support-calc{border:1px solid #d9cfc8;border-radius:10px;overflow:hidden;margin-bottom:10px;background:#fff8f4;box-shadow:0 1px 4px rgba(100,70,50,0.06);}
+.support-calc-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#ede5de;border-bottom:1px solid #d9cfc8;}
+.support-calc-name{font-size:14px;font-weight:600;color:#2d2520;}
+.support-calc-amount{font-size:14px;font-weight:600;color:#2e7a52;}
+.support-calc-body{padding:10px 14px;}
+.support-desc{font-size:12px;color:#7a6a62;line-height:1.7;margin-bottom:8px;}
+.support-check{display:flex;align-items:center;gap:6px;font-size:12px;color:#5a4a42;}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-bottom:6px;}
+.badge-k{background:#dde8f5;color:#2a5a9a;}
+.badge-j{background:#daf0e6;color:#1e6640;}
+.support-info{border:1px solid #d9cfc8;border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#fff8f4;box-shadow:0 1px 4px rgba(100,70,50,0.06);}
+.support-info-name{font-size:14px;font-weight:600;color:#2d2520;margin-bottom:6px;}
+.support-total-box{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin:1.25rem 0 0.5rem;}
+.note{font-size:12px;color:#9a8880;line-height:1.8;padding:10px 14px;background:#ede5de;border-radius:8px;margin-top:0.75rem;}
+.sup-inline{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin-bottom:1rem;}
+input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#b09080;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>離婚後の収支シミュレーター</h1>
+  <p class="header-sub">※このシートの数字はあくまで目安です。正確な情報はお住まいの市区町村窓口でご確認ください。</p>
+
+  <div class="step-nav">
+    <button class="step-btn active" onclick="go(0)">STEP 1<br>基本情報・収入</button>
+    <button class="step-btn" onclick="go(1)">STEP 2<br>公的支援の確認</button>
+    <button class="step-btn" onclick="go(2)">STEP 3<br>離婚後の収支試算</button>
+  </div>
+
+  <!-- STEP1 -->
+  <div class="step-panel active" id="p0">
+    <p class="sec-title">基本情報と収入の見込みを教えてください</p>
+    <p class="sec-sub">お子さんの情報と離婚後の収入見込みを入力します。</p>
+    <div class="child-section">
+      <p class="child-section-title">お子さんの情報</p>
+      <div class="child-row">
+        <label>人数</label>
+        <select id="child-count" onchange="buildChildren()">
+          <option value="0">選んでください</option>
+          <option value="1">1人</option>
+          <option value="2">2人</option>
+          <option value="3">3人以上</option>
+        </select>
+      </div>
+      <div id="child-ages"></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-label">離婚後の収入見込み（月額）</span>
+        <span class="card-total inc" id="inc-total">合計：0 円</span>
+      </div>
+      <div class="row"><label>給与・パート収入</label><input type="number" id="i1" placeholder="0" oninput="cInc()"><span class="unit">円</span></div>
+      <div class="row"><label>養育費（見込み）</label><input type="number" id="i2" placeholder="0" oninput="cInc()"><span class="unit">円</span></div>
+      <div class="row"><label>その他（副業等）</label><input type="number" id="i3" placeholder="0" oninput="cInc()"><span class="unit">円</span></div>
+    </div>
+    <button class="next-btn" onclick="go(1)">次へ：使える公的支援を確認する →</button>
+  </div>
+
+  <!-- STEP2 -->
+  <div class="step-panel" id="p1">
+    <p class="sec-title">使える公的支援を確認しましょう</p>
+    <p class="sec-sub">お子さんの情報をもとに金額を自動計算しています。該当しそうな制度にチェックを入れてください。</p>
+
+    <div class="support-calc">
+      <div class="support-calc-head">
+        <div><span class="badge badge-k">国の制度</span><br><span class="support-calc-name">児童扶養手当</span></div>
+        <span class="support-calc-amount" id="sa1">－</span>
+      </div>
+      <div class="support-calc-body">
+        <div class="support-desc">ひとり親家庭の中心的な手当。18歳年度末までの子を養育していれば対象（所得制限あり）。<br>全部支給：年収190万円以下（子ども1人の場合）／一部支給：年収385万円以下<br>申請先：お住まいの市区町村窓口</div>
+        <div class="support-check"><input type="checkbox" id="s1" onchange="cSupport()"><label for="s1">対象になりそう（所得が一定以下）</label></div>
+      </div>
+    </div>
+
+    <div class="support-calc">
+      <div class="support-calc-head">
+        <div><span class="badge badge-k">国の制度</span><br><span class="support-calc-name">児童手当</span></div>
+        <span class="support-calc-amount" id="sa2">－</span>
+      </div>
+      <div class="support-calc-body">
+        <div class="support-desc">0歳〜18歳の子ども全員に支給。所得制限なし。<br>⚠️ 離婚後は受取人をご自身に変更する手続きが必要です。<br>申請先：お住まいの市区町村窓口</div>
+        <div class="support-check"><input type="checkbox" id="s2" onchange="cSupport()"><label for="s2">18歳以下の子どもがいる</label></div>
+      </div>
+    </div>
+
+    <div class="support-info">
+      <span class="badge badge-j">自治体の制度</span>
+      <div class="support-info-name">ひとり親家庭医療費助成</div>
+      <div class="support-desc">ひとり親と子どもの医療費の自己負担を助成。金額は自治体によって異なります。所得制限あり。<br>申請先：お住まいの市区町村窓口</div>
+    </div>
+
+    <div class="support-info">
+      <span class="badge badge-j">自治体の制度</span>
+      <div class="support-info-name">国民健康保険料の軽減</div>
+      <div class="support-desc">国民健康保険に加入しているまたは加入する場合、所得に応じて保険料が2〜7割軽減される可能性があります。<br>申請先：お住まいの市区町村窓口</div>
+    </div>
+
+    <div class="support-info">
+      <span class="badge badge-k">国の制度（税）</span>
+      <div class="support-info-name">ひとり親控除</div>
+      <div class="support-desc">所得から35万円が控除され、所得税・住民税が軽減されます。節税効果は年収によって異なります。<br>申請方法：年末調整または確定申告</div>
+    </div>
+
+    <div class="support-info">
+      <span class="badge badge-k">国の制度</span>
+      <div class="support-info-name">高等学校就学支援金</div>
+      <div class="support-desc">高校生の授業料を支援する制度です。<br>公立高校：年間118,800円相当／私立高校（年収590万円未満）：最大年間396,000円<br>申請先：在学中の高校</div>
+    </div>
+
+    <div class="support-total-box">
+      <span style="font-size:13px;color:#7a6a62;">チェックした制度の想定支援額（月換算・目安）</span>
+      <span style="font-size:22px;font-weight:700;color:#2e7a52;" id="s-total">0 円</span>
+    </div>
+    <div class="note">※金額はあくまで目安です。所得・子どもの年齢・自治体によって異なります。正確な金額はお住まいの市区町村窓口でご確認ください。</div>
+    <button class="next-btn" onclick="go(2)">次へ：離婚後の収支をイメージする →</button>
+  </div>
+
+  <!-- STEP3 -->
+  <div class="step-panel" id="p2">
+    <p class="sec-title">離婚後の収支をイメージしましょう</p>
+    <p class="sec-sub">あなたとお子さんだけの生活をベースに支出を入力してください。</p>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-label">収入（月額）</span>
+        <span class="card-total inc" id="f-inc-disp">合計：0 円</span>
+      </div>
+      <div class="row"><label>給与・パート収入</label><input type="number" id="fi1" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>養育費（見込み）</label><input type="number" id="fi2" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>その他（副業等）</label><input type="number" id="fi3" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-label">支出（月額・あなた＋お子さんの生活）</span>
+        <span class="card-total exp" id="f-exp-disp">合計：0 円</span>
+      </div>
+      <div class="row"><label>家賃・住居費</label><input type="number" id="fe1" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>食費</label><input type="number" id="fe2" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>日用品・消耗品</label><input type="number" id="fe3" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>光熱費</label><input type="number" id="fe4" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>通信費</label><input type="number" id="fe5" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>車関連</label><input type="number" id="fe6" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>子どもの教育費・習い事</label><input type="number" id="fe7" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>保険料（生命・医療）</label><input type="number" id="fe8" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+      <div class="row"><label>娯楽・被服・その他</label><input type="number" id="fe9" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
+    </div>
+    <div class="sup-inline">
+      <span style="font-size:13px;color:#7a6a62;">公的支援（STEP 2でチェックした分）</span>
+      <span style="font-size:14px;font-weight:600;color:#2e7a52;" id="f-sup-disp">＋ 0 円/月</span>
+    </div>
+    <div class="balance-box">
+      <span class="balance-label">離婚後の月収支（収入＋支援ー支出）</span>
+      <span class="balance-value" id="f-bal">0 円</span>
+    </div>
+    <div class="note">このシートはあくまで大まかなイメージです。実際の金額は収入・世帯状況・お住まいの自治体によって異なります。詳しくはこども家庭庁のひとり親ポータルや市区町村窓口でご確認ください。</div>
+  </div>
+</div>
+
+<script>
+function go(n){
+  document.querySelectorAll('.step-panel').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.step-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+  if(n===2)syncIncome();
+}
+function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function fmt(n){return Math.round(n).toLocaleString('ja-JP')+' 円';}
+let supMon=0;
+const ageLabels=['0〜2歳（3歳未満）','3歳〜小学生','中学生','高校生'];
+function buildChildren(){
+  const n=parseInt(document.getElementById('child-count').value)||0;
+  const wrap=document.getElementById('child-ages');
+  wrap.innerHTML='';
+  for(let i=0;i<Math.min(n,3);i++){
+    const d=document.createElement('div');
+    d.className='child-row';
+    d.innerHTML=`<label>${i+1}人目</label><select id="ca${i}" onchange="cSupport()">${ageLabels.map((a,j)=>`<option value="${j}">${a}</option>`).join('')}</select>`;
+    wrap.appendChild(d);
+  }
+  if(n>=3){
+    const d=document.createElement('div');
+    d.style.cssText='font-size:12px;color:#b09080;margin-top:4px;';
+    d.textContent='※4人目以降は窓口にご確認ください';
+    wrap.appendChild(d);
+  }
+  cSupport();
+}
+function getChildAges(){
+  const n=Math.min(parseInt(document.getElementById('child-count').value)||0,3);
+  const res=[];
+  for(let i=0;i<n;i++){const el=document.getElementById('ca'+i);res.push(el?parseInt(el.value):0);}
+  return res;
+}
+function calcKyoyo(ca){
+  if(ca.length===0)return 0;
+  let amt=48050;
+  if(ca.length>=2)amt+=11350;
+  if(ca.length>=3)amt+=11350;
+  return amt;
+}
+function calcJido(ca){
+  return ca.reduce((sum,a,i)=>{
+    const base=a===0?15000:10000;
+    const bonus=i>=2?20000:0;
+    return sum+base+bonus;
+  },0);
+}
+function cSupport(){
+  const ca=getChildAges();
+  const n=ca.length;
+  const kyoyo=calcKyoyo(ca);
+  const jido=calcJido(ca);
+  document.getElementById('sa1').textContent=n>0?fmt(kyoyo)+'/月（目安・全部支給の場合）':'お子さんの情報を入力してください';
+  document.getElementById('sa2').textContent=n>0?fmt(jido)+'/月（目安）':'お子さんの情報を入力してください';
+  let s=0;
+  if(document.getElementById('s1').checked)s+=kyoyo;
+  if(document.getElementById('s2').checked)s+=jido;
+  supMon=s;
+  document.getElementById('s-total').textContent=fmt(s);
+  document.getElementById('f-sup-disp').textContent='＋ '+fmt(s)+'/月';
+  cFut();
+}
+function cInc(){
+  const inc=v('i1')+v('i2')+v('i3');
+  document.getElementById('inc-total').textContent='合計：'+fmt(inc);
+}
+function syncIncome(){
+  ['i1','i2','i3'].forEach((f,i)=>{
+    const val=document.getElementById(f).value;
+    const t=document.getElementById('fi'+(i+1));
+    if(val&&t)t.value=val;
+  });
+  cFut();
+}
+function cFut(){
+  const inc=v('fi1')+v('fi2')+v('fi3');
+  const exp=v('fe1')+v('fe2')+v('fe3')+v('fe4')+v('fe5')+v('fe6')+v('fe7')+v('fe8')+v('fe9');
+  const bal=inc+supMon-exp;
+  document.getElementById('f-inc-disp').textContent='合計：'+fmt(inc);
+  document.getElementById('f-exp-disp').textContent='合計：'+fmt(exp);
+  const el=document.getElementById('f-bal');
+  el.textContent=fmt(bal);
+  el.className='balance-value'+(bal>=0?' plus':' minus');
+}
+</script>
+</body>
+</html>
