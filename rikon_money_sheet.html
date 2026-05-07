@@ -7,58 +7,58 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Meiryo',sans-serif;background:#f2ede8;color:#2d2520;padding:1.5rem 1rem;}
-.wrap{max-width:680px;margin:0 auto;}
-h1{font-size:18px;font-weight:600;color:#2d2520;margin-bottom:4px;text-align:center;}
-.header-sub{font-size:12px;color:#9a8880;text-align:center;margin-bottom:2rem;}
+.wrap{max-width:720px;margin:0 auto;}
+h1{font-size:22px;font-weight:600;color:#2d2520;margin-bottom:4px;text-align:center;}
+.header-sub{font-size:14px;color:#9a8880;text-align:center;margin-bottom:2rem;}
 .step-nav{display:flex;border:1px solid #d9cfc8;border-radius:10px;overflow:hidden;margin-bottom:2rem;}
-.step-btn{flex:1;padding:10px 4px;font-size:12px;background:#e8e0d8;color:#9a8880;border:none;border-right:1px solid #d9cfc8;cursor:pointer;line-height:1.5;transition:background 0.15s;}
+.step-btn{flex:1;padding:12px 4px;font-size:14px;background:#e8e0d8;color:#9a8880;border:none;border-right:1px solid #d9cfc8;cursor:pointer;line-height:1.5;transition:background 0.15s;}
 .step-btn:last-child{border-right:none;}
 .step-btn.active{background:#fff8f4;color:#2d2520;font-weight:600;}
 .step-panel{display:none;}
 .step-panel.active{display:block;}
-.sec-title{font-size:17px;font-weight:600;color:#2d2520;margin-bottom:4px;}
-.sec-sub{font-size:13px;color:#7a6a62;line-height:1.6;margin-bottom:1.25rem;}
+.sec-title{font-size:20px;font-weight:600;color:#2d2520;margin-bottom:4px;}
+.sec-sub{font-size:15px;color:#7a6a62;line-height:1.6;margin-bottom:1.25rem;}
 .card{background:#fff8f4;border:1px solid #d9cfc8;border-radius:10px;overflow:hidden;margin-bottom:1rem;box-shadow:0 1px 4px rgba(100,70,50,0.06);}
-.card-head{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:#ede5de;border-bottom:1px solid #d9cfc8;}
-.card-head-label{font-size:13px;font-weight:600;color:#2d2520;}
-.card-total{font-size:14px;font-weight:600;}
+.card-head{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#ede5de;border-bottom:1px solid #d9cfc8;}
+.card-head-label{font-size:15px;font-weight:600;color:#2d2520;}
+.card-total{font-size:16px;font-weight:600;}
 .card-total.inc{color:#2e7a52;}
 .card-total.exp{color:#a83228;}
-.row{display:grid;grid-template-columns:1fr 110px 20px;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #ede5de;}
+.row{display:grid;grid-template-columns:1fr 130px 24px;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid #ede5de;}
 .row:last-child{border-bottom:none;}
-.row label{font-size:13px;color:#5a4a42;line-height:1.4;}
-.row input[type=number]{width:110px;padding:6px 8px;font-size:13px;border:1px solid #c8beb8;border-radius:6px;background:#fffcfa;color:#2d2520;text-align:right;}
+.row label{font-size:15px;color:#5a4a42;line-height:1.4;}
+.row input[type=number]{width:130px;padding:7px 10px;font-size:15px;border:1px solid #c8beb8;border-radius:6px;background:#fffcfa;color:#2d2520;text-align:right;}
 .row input[type=number]:focus{outline:none;border-color:#b09080;}
-.row .unit{font-size:12px;color:#b09080;}
-.balance-box{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin-bottom:1.25rem;}
-.balance-label{font-size:13px;color:#7a6a62;}
-.balance-value{font-size:22px;font-weight:700;}
+.row .unit{font-size:14px;color:#b09080;}
+.balance-box{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin-bottom:1.25rem;}
+.balance-label{font-size:15px;color:#7a6a62;}
+.balance-value{font-size:26px;font-weight:700;}
 .balance-value.plus{color:#2e7a52;}
 .balance-value.minus{color:#a83228;}
-.next-btn{display:block;width:100%;padding:12px;font-size:14px;font-weight:600;background:#fff8f4;border:1px solid #c8beb8;border-radius:8px;cursor:pointer;color:#2d2520;margin-top:1.25rem;transition:background 0.15s;}
+.next-btn{display:block;width:100%;padding:14px;font-size:16px;font-weight:600;background:#fff8f4;border:1px solid #c8beb8;border-radius:8px;cursor:pointer;color:#2d2520;margin-top:1.25rem;transition:background 0.15s;}
 .next-btn:hover{background:#ede5de;}
-.child-section{background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;padding:14px;margin-bottom:1rem;}
-.child-section-title{font-size:13px;font-weight:600;color:#2d2520;margin-bottom:10px;}
-.child-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.child-section{background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;padding:16px;margin-bottom:1rem;}
+.child-section-title{font-size:15px;font-weight:600;color:#2d2520;margin-bottom:10px;}
+.child-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .child-row:last-child{margin-bottom:0;}
-.child-row label{font-size:13px;color:#5a4a42;min-width:70px;}
-.child-row select{padding:6px 8px;font-size:13px;border:1px solid #c8beb8;border-radius:6px;background:#fff8f4;color:#2d2520;}
-.support-calc{border:1px solid #d9cfc8;border-radius:10px;overflow:hidden;margin-bottom:10px;background:#fff8f4;box-shadow:0 1px 4px rgba(100,70,50,0.06);}
-.support-calc-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#ede5de;border-bottom:1px solid #d9cfc8;}
-.support-calc-name{font-size:14px;font-weight:600;color:#2d2520;}
-.support-calc-amount{font-size:14px;font-weight:600;color:#2e7a52;}
-.support-calc-body{padding:10px 14px;}
-.support-desc{font-size:12px;color:#7a6a62;line-height:1.7;margin-bottom:8px;}
-.support-check{display:flex;align-items:center;gap:6px;font-size:12px;color:#5a4a42;}
-.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-bottom:6px;}
+.child-row label{font-size:15px;color:#5a4a42;min-width:70px;}
+.child-row select{padding:8px 10px;font-size:15px;border:1px solid #c8beb8;border-radius:6px;background:#fff8f4;color:#2d2520;}
+.support-calc{border:1px solid #d9cfc8;border-radius:10px;overflow:hidden;margin-bottom:12px;background:#fff8f4;box-shadow:0 1px 4px rgba(100,70,50,0.06);}
+.support-calc-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#ede5de;border-bottom:1px solid #d9cfc8;}
+.support-calc-name{font-size:16px;font-weight:600;color:#2d2520;}
+.support-calc-amount{font-size:16px;font-weight:600;color:#2e7a52;}
+.support-calc-body{padding:12px 16px;}
+.support-desc{font-size:14px;color:#7a6a62;line-height:1.7;margin-bottom:10px;}
+.support-check{display:flex;align-items:center;gap:8px;font-size:14px;color:#5a4a42;}
+.badge{display:inline-block;font-size:12px;padding:3px 10px;border-radius:10px;margin-bottom:8px;}
 .badge-k{background:#dde8f5;color:#2a5a9a;}
 .badge-j{background:#daf0e6;color:#1e6640;}
-.support-info{border:1px solid #d9cfc8;border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#fff8f4;box-shadow:0 1px 4px rgba(100,70,50,0.06);}
-.support-info-name{font-size:14px;font-weight:600;color:#2d2520;margin-bottom:6px;}
-.support-total-box{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin:1.25rem 0 0.5rem;}
-.note{font-size:12px;color:#9a8880;line-height:1.8;padding:10px 14px;background:#ede5de;border-radius:8px;margin-top:0.75rem;}
-.sup-inline{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin-bottom:1rem;}
-input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#b09080;}
+.support-info{border:1px solid #d9cfc8;border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fff8f4;box-shadow:0 1px 4px rgba(100,70,50,0.06);}
+.support-info-name{font-size:16px;font-weight:600;color:#2d2520;margin-bottom:8px;}
+.support-total-box{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin:1.25rem 0 0.5rem;}
+.note{font-size:13px;color:#9a8880;line-height:1.8;padding:12px 16px;background:#ede5de;border-radius:8px;margin-top:0.75rem;}
+.sup-inline{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#ede5de;border:1px solid #d9cfc8;border-radius:10px;margin-bottom:1rem;}
+input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#b09080;}
 </style>
 </head>
 <body>
@@ -156,8 +156,8 @@ input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#b09080;
     </div>
 
     <div class="support-total-box">
-      <span style="font-size:13px;color:#7a6a62;">チェックした制度の想定支援額（月換算・目安）</span>
-      <span style="font-size:22px;font-weight:700;color:#2e7a52;" id="s-total">0 円</span>
+      <span style="font-size:15px;color:#7a6a62;">チェックした制度の想定支援額（月換算・目安）</span>
+      <span style="font-size:26px;font-weight:700;color:#2e7a52;" id="s-total">0 円</span>
     </div>
     <div class="note">※金額はあくまで目安です。所得・子どもの年齢・自治体によって異なります。正確な金額はお住まいの市区町村窓口でご確認ください。</div>
     <button class="next-btn" onclick="go(2)">次へ：離婚後の収支をイメージする →</button>
@@ -192,8 +192,8 @@ input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#b09080;
       <div class="row"><label>娯楽・被服・その他</label><input type="number" id="fe9" placeholder="0" oninput="cFut()"><span class="unit">円</span></div>
     </div>
     <div class="sup-inline">
-      <span style="font-size:13px;color:#7a6a62;">公的支援（STEP 2でチェックした分）</span>
-      <span style="font-size:14px;font-weight:600;color:#2e7a52;" id="f-sup-disp">＋ 0 円/月</span>
+      <span style="font-size:15px;color:#7a6a62;">公的支援（STEP 2でチェックした分）</span>
+      <span style="font-size:16px;font-weight:600;color:#2e7a52;" id="f-sup-disp">＋ 0 円/月</span>
     </div>
     <div class="balance-box">
       <span class="balance-label">離婚後の月収支（収入＋支援ー支出）</span>
@@ -225,7 +225,7 @@ function buildChildren(){
   }
   if(n>=3){
     const d=document.createElement('div');
-    d.style.cssText='font-size:12px;color:#b09080;margin-top:4px;';
+    d.style.cssText='font-size:14px;color:#b09080;margin-top:4px;';
     d.textContent='※4人目以降は窓口にご確認ください';
     wrap.appendChild(d);
   }
